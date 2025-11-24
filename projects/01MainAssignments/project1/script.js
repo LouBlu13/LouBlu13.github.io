@@ -13,7 +13,7 @@ let textAlpha = 180;
 let clickTexts = [];
 
 function preload() {
-  font = loadFont("RobotoMono-Bold.otf");
+  font = loadFont('/assets/RobotoMono-Bold.otf');
 }
 
 function setup() {

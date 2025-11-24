@@ -1,29 +1,22 @@
-let len = 10;
-let bg;
+let font;
 
-function setup() {
-	createCanvas(windowWidth,windowHeight);
-	background(0);
-	frameRate(30);
-	rectMode(CENTER);
-	bg = color(10, 200, 58);
+function preload(){ font=loadFont("RobotoMono-Bold.otf"); }
+
+function setup(){
+  createCanvas(windowWidth, windowHeight);
+  textFont(font);
+  textSize(40);
+  textAlign(CENTER,CENTER);
 }
 
-function  draw() {
-	background(bg);
-	noFill();
-	strokeWeight(5);
-	stroke(20,250, 40);
-	
-	rect(pmouseX, pmouseY, len, len)
-  //height - mouseY mirrors the object along y axis
-	rect(pmouseX, height - pmouseY, len, len)
-	//increase the lenght by 1px every frame
-	len++;
-	
-	if(mouseIsPressed) {
-		len = 0;  
-		bg = color(89, 30, 33);
-	}
+function draw(){
+  background(0);
+  translate(width/2, height/2);
+  for(let i=-10;i<10;i++){
+    for(let j=-10;j<10;j++){
+      let n = noise(i*0.3, j*0.3, frameCount*0.01)*50;
+      fill(map(i+j,0,20,0,255), map(j,0,20,0,255), 255);
+      text("ZHdK", i*50+n, j*50+n);
+    }
+  }
 }
-

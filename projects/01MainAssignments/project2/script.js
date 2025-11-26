@@ -8,7 +8,7 @@ let products = [];
 let cols = 2; // Zwei Spalten
 
 function setup() {
-	createCanvas(windowWith, windowHeight);
+	createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
   rectMode(CENTER);
   textSize(14);

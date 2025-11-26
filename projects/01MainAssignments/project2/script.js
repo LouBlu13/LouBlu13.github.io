@@ -24,7 +24,7 @@ function setup() {
 }
 
 function draw() {
-  background('#1D1B31'); // dunkler Hintergrund
+  background('#1D1B31'); 
 
   let productWidth = (width - barWidth - 60) / cols; 
   let productHeight = 180;
@@ -70,8 +70,8 @@ function draw() {
   // Knopf-Position basierend auf ScrollY
   let knobY = map(scrollY, 0, max(contentHeight - height, 1), 0, height - knobHeight);
 
-  // Scroll-Knopf neon-grün und abgerundet
-  fill('#39FF14'); // neon grün
+  // Scroll-Knopf 
+  fill('#39FF14'); 
   rect(width - barWidth/2, knobY + knobHeight / 2, barWidth, knobHeight, 10); // letzter Parameter = Abrundung
 }
 

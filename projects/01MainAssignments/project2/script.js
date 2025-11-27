@@ -6,9 +6,10 @@ let isDragging = false;
 
 let products = [];
 let cols = 2; // Zwei Spalten
+let buttonOffsets = []; // Bewegung der Buy Buttons
 
 function setup() {
-	createCanvas(500, windowHeight);
+  createCanvas(500, windowHeight);
   textAlign(CENTER, CENTER);
   rectMode(CENTER);
   textSize(14);
@@ -20,11 +21,19 @@ function setup() {
       price: "$" + (Math.floor(random(10, 100))),
       color: color(random(200, 255), random(150, 255), random(150, 255))
     });
+
+    // Startposition + random Richtung
+    buttonOffsets.push({
+      x: random(-40, 40),
+      y: random(20, 60),
+      dx: random(-2, 2),
+      dy: random(-2, 2)
+    });
   }
 }
 
 function draw() {
-  background('#1D1B31'); 
+  background('#1D1B31'); // dunkler Hintergrund
 
   let productWidth = (width - barWidth - 60) / cols; 
   let productHeight = 180;
@@ -54,25 +63,44 @@ function draw() {
     // Preis
     text(products[i].price, x, y + 30);
 
-    // Buy Button
+    // ===========================
+    //      Schneller Buy Button
+    //      mit voller Box-Bewegung
+    // ===========================
+    let b = buttonOffsets[i];
+
+    // Geschwindigkeit hochdrehen
+    b.x += b.dx * 3;
+    b.y += b.dy * 3;
+
+    // Grenzen der Box definieren
+    let minX = -productWidth / 2 + 40;
+    let maxX = productWidth / 2 - 40;
+    let minY = -productHeight / 2 + 80;
+    let maxY = productHeight / 2 - 20;
+
+    // An Kanten abprallen
+    if (b.x < minX || b.x > maxX) b.dx *= -1;
+    if (b.y < minY || b.y > maxY) b.dy *= -1;
+
+    // Button zeichnen (Bewegung addieren)
     fill('#39FF14');
-    rect(x, y + 60, 80, 30, 5);
+    rect(x + b.x, y + b.y, 80, 30, 5);
+
     fill(255);
-    text("Buy", x, y + 60);
-	  
+    text("Buy", x + b.x, y + b.y);
   }
 
-  // Scroll-Balken über die ganze Seite
+  // Scroll-Balken über die Seite
   fill(200);
   noStroke();
-  rect(width - barWidth/2, height/2, barWidth, height); // Balken von oben bis unten
+  rect(width - barWidth/2, height/2, barWidth, height);
 
-  // Knopf-Position basierend auf ScrollY
+  // Scroll-Knopf
   let knobY = map(scrollY, 0, max(contentHeight - height, 1), 0, height - knobHeight);
 
-  // Scroll-Knopf 
-  fill('#39FF14'); 
-  rect(width - barWidth/2, knobY + knobHeight / 2, barWidth, knobHeight, 10); // letzter Parameter = Abrundung
+  fill('#39FF14');
+  rect(width - barWidth/2, knobY + knobHeight / 2, barWidth, knobHeight, 10);
 }
 
 function mousePressed() {

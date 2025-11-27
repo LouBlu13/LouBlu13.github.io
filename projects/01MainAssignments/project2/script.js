@@ -25,7 +25,7 @@ function setup() {
     // Startposition + random Richtung
     buttonOffsets.push({
       x: random(-40, 40),
-      y: random(20, 60),
+      y: random(-40, 40),
       dx: random(-2, 2),
       dy: random(-2, 2)
     });
@@ -33,7 +33,7 @@ function setup() {
 }
 
 function draw() {
-  background('#1D1B31'); // dunkler Hintergrund
+  background('#1D1B31');
 
   let productWidth = (width - barWidth - 60) / cols; 
   let productHeight = 180;
@@ -42,9 +42,8 @@ function draw() {
 
   let contentHeight = Math.ceil(products.length / cols) * (productHeight + spacingY);
 
-  scrollY = lerp(scrollY, targetScroll, 0.1); // sanftes Scrollen
+  scrollY = lerp(scrollY, targetScroll, 0.1);
 
-  // Produkte anzeigen
   for (let i = 0; i < products.length; i++) {
     let col = i % cols;
     let row = Math.floor(i / cols);
@@ -61,29 +60,30 @@ function draw() {
     text(products[i].name, x, y - 30);
 
     // Preis
-    text(products[i].price, x, y + 30);
+    text(products[i].price, x, y + 0);
 
     // ===========================
-    //      Schneller Buy Button
-    //      mit voller Box-Bewegung
+    //   Schneller Buy Button
+    //   prallt NUR an Boxkanten ab
     // ===========================
     let b = buttonOffsets[i];
 
-    // Geschwindigkeit hochdrehen
+    // Geschwindigkeit
     b.x += b.dx * 3;
     b.y += b.dy * 3;
 
-    // Grenzen der Box definieren
+    // Grenzen: komplette Box, minus Button-Halbbreite/Höhe
     let minX = -productWidth / 2 + 40;
     let maxX = productWidth / 2 - 40;
-    let minY = -productHeight / 2 + 80;
-    let maxY = productHeight / 2 - 20;
 
-    // An Kanten abprallen
+    let minY = -productHeight / 2 + 15;
+    let maxY = productHeight / 2 - 15;
+
+    // Abprallen an echten Boxkanten
     if (b.x < minX || b.x > maxX) b.dx *= -1;
     if (b.y < minY || b.y > maxY) b.dy *= -1;
 
-    // Button zeichnen (Bewegung addieren)
+    // Button zeichnen
     fill('#39FF14');
     rect(x + b.x, y + b.y, 80, 30, 5);
 
@@ -91,12 +91,11 @@ function draw() {
     text("Buy", x + b.x, y + b.y);
   }
 
-  // Scroll-Balken über die Seite
+  // Scroll-Balken
   fill(200);
   noStroke();
   rect(width - barWidth/2, height/2, barWidth, height);
 
-  // Scroll-Knopf
   let knobY = map(scrollY, 0, max(contentHeight - height, 1), 0, height - knobHeight);
 
   fill('#39FF14');
@@ -109,6 +108,7 @@ function mousePressed() {
   let contentHeight = Math.ceil(products.length / cols) * (productHeight + spacingY);
 
   let knobY = map(scrollY, 0, max(contentHeight - height, 1), 0, height - knobHeight);
+  
   if (mouseX > width - barWidth && mouseX < width && mouseY > knobY && mouseY < knobY + knobHeight) {
     isDragging = true;
   }
@@ -127,5 +127,5 @@ function mouseDragged() {
 
 function mouseReleased() {
   isDragging = false;
-  targetScroll = 0; // Seite fällt wieder nach oben
+  targetScroll = 0;
 }

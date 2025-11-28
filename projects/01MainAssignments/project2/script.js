@@ -69,7 +69,7 @@ function draw() {
       p.btnY = y + 60;
     }
 
-    // ❗ Buttons schneller (3x)
+    //  Buttons schneller (3x)
     p.btnX += p.btnVX * 3;
     p.btnY += p.btnVY * 3;
 
